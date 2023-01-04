@@ -1,5 +1,5 @@
 def print_menu():
-  print("1. Option 1")
+  print("1. why is it not changing")
   print("2. Option 2")
   print("3. Option 3")
   print("4. Option 4")
