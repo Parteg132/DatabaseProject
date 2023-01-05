@@ -1,10 +1,15 @@
 from getpass import getpass
 from mysql.connector import connect, Error
 
+import userModule
+
 def print_menu():
   print("-----------------------------------------------")
   print("1. Print out all data in a table")
-  print("2. Option 2")
+  print("2. Rejestracja")
+  print("3. Weryfikacja email")
+  print("4. Logowanie")
+  print("5. Odświeżenie bazy użytkowników")
   print("0. Quit")
   print("-----------------------------------------------")
 
@@ -48,8 +53,14 @@ def main():
             for i in cursor:
               print(i)
             print("-----------------------------------------------")
-        # elif choice == "2":
-        #   # Code for Option 2
+        elif choice == "2":
+          userModule.creating_account(connection)
+        elif choice == "3":
+          userModule.email_verification(connection)
+        elif choice == "4":
+          userModule.log_in(connection)
+        elif choice == "5":
+          userModule.refresh_users(connection)
         elif choice == "0":
           break
         else:
