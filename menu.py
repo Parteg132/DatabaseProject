@@ -8,6 +8,7 @@ def print_menu():
   print("0. Quit")
   print("-----------------------------------------------")
 
+ #'''SPRAWDZIC refresh_users w userModule ! KOMENTARZ'''
 def sqlconnection():
   try:
     with connect(
