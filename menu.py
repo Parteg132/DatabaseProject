@@ -2,30 +2,21 @@ from getpass import getpass
 from mysql.connector import connect, Error
 
 import userModule
+import docPay
 
 def print_menu():
   print("-----------------------------------------------")
   print("1. Print out all data in a table")
-  print("2. Rejestracja")
-  print("3. Weryfikacja email")
-  print("4. Logowanie")
-  print("5. Odświeżenie bazy użytkowników")
+  print("2. Registration")
+  print("3. Email verification")
+  print("4. Log in")
+  print("5. Refresh user database")
+  print("6. Add your drivers licence")
+  print("7. Add your credit card")
   print("0. Quit")
   print("-----------------------------------------------")
 
  #'''SPRAWDZIC refresh_users w userModule ! KOMENTARZ'''
-def sqlconnection():
-  try:
-    with connect(
-        host="localhost",
-        user=input("Enter username: "),
-        password=getpass("Enter password: "),
-    ) as connection:
-      print(connection)
-      return True, connection
-  except Error as e:
-    print(e)
-    return False, None
 
 def main():
   try:
@@ -41,18 +32,7 @@ def main():
         print_menu()
         choice = input("Enter your choice: ")
         if choice == "1":
-          with connection.cursor() as cursor:
-            cursor.execute("SHOW TABLES")
-            for i in cursor:
-              print(i)
-            table = input("What table would you like to see?: ")
-            query = "SELECT * FROM {};".format(table)
-            cursor.execute(query)
-            print("-----------------------------------------------")
-            print(cursor.column_names)
-            for i in cursor:
-              print(i)
-            print("-----------------------------------------------")
+          docPay.printData(connection)
         elif choice == "2":
           userModule.creating_account(connection)
         elif choice == "3":
@@ -61,6 +41,10 @@ def main():
           userModule.log_in(connection)
         elif choice == "5":
           userModule.refresh_users(connection)
+        elif choice == "6":
+          docPay.addLic(connection)
+        elif choice == "7":
+          docPay.addCred(connection)
         elif choice == "0":
           break
         else:
