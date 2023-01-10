@@ -132,15 +132,16 @@ def add_cars(connection):
             # sprawdz czy int 1950-2023
             engine_type = car_enginetype()
             gearbox = car_gearboxtype()
-            fuel_battery_level = int(input("Enter fuel battery level: "))
+            fuel_battery_level = int(input("Enter fuel/battery level: "))
             #sprawdz czy int 0-100
             car_mileage = int(input("Enter car mileage: "))
             status = car_status(fuel_battery_level)
             localization_x = input("Enter X coordinate of location: ")
             localization_y = input("Enter Y coordinate of location: ")
 
-            cursor.execute("INSERT INTO cars (brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                       (brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y))
+            query = "INSERT INTO cars (brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            data = (brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y)
+            cursor.execute(query, data)
             print("The car has been added")
             connection.commit()
 
@@ -162,7 +163,9 @@ def add_brand(connection):
         while add_new_brand:
             manufacturer = input("Enter the manufacturer: ")
 
-            cursor.execute("INSERT INTO car_brands (manufacturer) VALUES (%s)", (manufacturer,))
+            query = "INSERT INTO car_brands (manufacturer) VALUES (%s)"
+            data = (manufacturer,)
+            cursor.execute(query, data)
             print("The brand has been added")
             connection.commit()
 
@@ -188,7 +191,9 @@ def add_class(connection):
             stop_7_23 = float(input("Enter stop fee between 7-23: "))
             stop_23_7 = float(input("Enter stop fee between 23-7: "))
 
-            cursor.execute("INSERT INTO classes (name, start_fee, minute_fee, kilometer_fee, stop_7_23, stop_23_7) VALUES (%s, %s, %s, %s, %s, %s)", (name, start_fee, minute_fee, kilometer_fee, stop_7_23, stop_23_7))
+            query = "INSERT INTO classes (name, start_fee, minute_fee, kilometer_fee, stop_7_23, stop_23_7) VALUES (%s, %s, %s, %s, %s, %s)"
+            data = (name, start_fee, minute_fee, kilometer_fee, stop_7_23, stop_23_7)
+            cursor.execute(query, data)
             print("The class has been added")
             connection.commit()
 
