@@ -3,7 +3,7 @@ from mysql.connector import connect, Error
 
 import userModule
 import docPay
-
+import renting_leasing_company
 def print_menu():
   print("-----------------------------------------------")
   print("1. Print out all data in a table")
@@ -13,6 +13,11 @@ def print_menu():
   print("5. Refresh user database")
   print("6. Add your drivers licence")
   print("7. Add your credit card")
+  print("8. Start renting")
+  print("9. Update renting info")
+  print("10. End renting")
+  print("11. Add leasing info")
+  print("12. Add leasing company")
   print("0. Quit")
   print("-----------------------------------------------")
 
@@ -45,6 +50,20 @@ def main():
           docPay.addLic(connection)
         elif choice == "7":
           docPay.addCred(connection)
+
+        elif choice == "8":
+          renting_leasing_company.start_renting(connection)
+        elif choice == "9":
+          renting_leasing_company.update_route_info(connection)
+        elif choice == "10":
+          renting_leasing_company.end_renting(connection)
+        elif choice == "11":
+          renting_leasing_company.add_leasing_deal(connection)
+        elif choice == "12":
+          renting_leasing_company.add_leasing_company(connection)
+
+
+
         elif choice == "0":
           break
         else:
@@ -54,3 +73,5 @@ def main():
 
 if __name__ == "__main__":
   main()
+
+
