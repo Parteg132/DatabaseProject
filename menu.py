@@ -4,6 +4,8 @@ from mysql.connector import connect, Error
 import userModule
 import docPay
 import renting_leasing_company
+import cars_brands_classes
+
 def print_menu():
   print("-----------------------------------------------")
   print("1. Print out all data in a table")
@@ -18,6 +20,10 @@ def print_menu():
   print("10. End renting")
   print("11. Add leasing info")
   print("12. Add leasing company")
+  print("13. Add a new car")
+  print("14. Add a new brand")
+  print("15. Add a new class")
+  print("16. Edit class")
   print("0. Quit")
   print("-----------------------------------------------")
 
@@ -33,7 +39,7 @@ def main():
     ) as connection:
       print(connection)
 
-      while True:    
+      while True:
         print_menu()
         choice = input("Enter your choice: ")
         if choice == "1":
@@ -50,7 +56,6 @@ def main():
           docPay.addLic(connection)
         elif choice == "7":
           docPay.addCred(connection)
-
         elif choice == "8":
           renting_leasing_company.start_renting(connection)
         elif choice == "9":
@@ -61,9 +66,14 @@ def main():
           renting_leasing_company.add_leasing_deal(connection)
         elif choice == "12":
           renting_leasing_company.add_leasing_company(connection)
-
-
-
+        elif choice == "13":
+          cars_brands_classes.add_cars(connection)
+        elif choice == "14":
+          cars_brands_classes.add_brand(connection)
+        elif choice == "15":
+          cars_brands_classes.add_class(connection)
+        elif choice == "16":
+          cars_brands_classes.edit_class(connection)
         elif choice == "0":
           break
         else:
@@ -73,5 +83,3 @@ def main():
 
 if __name__ == "__main__":
   main()
-
-
