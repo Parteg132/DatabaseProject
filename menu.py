@@ -24,6 +24,8 @@ def print_menu():
   print("14. Add a new brand")
   print("15. Add a new class")
   print("16. Edit class")
+  print("17. Refueling")
+  print("18. Report the damage")
   print("0. Quit")
   print("-----------------------------------------------")
 
@@ -74,6 +76,10 @@ def main():
           cars_brands_classes.add_class(connection)
         elif choice == "16":
           cars_brands_classes.edit_class(connection)
+        elif choice == "17":
+          cars_brands_classes.refueling(connection)
+        elif choice == "18":
+          cars_brands_classes.report_damage(connection)
         elif choice == "0":
           break
         else:
