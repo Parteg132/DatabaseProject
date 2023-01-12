@@ -131,8 +131,10 @@ def add_cars(connection):
                     print("Invalid string length. Please try again.")
                 else:
                     break
+
             model = input("Enter car model: ")
             generation = input("Enter car generation: ")
+
             while True:
                 car_year = int(input("Enter car production year between 1950 and 2023: "))
                 try:
@@ -142,8 +144,10 @@ def add_cars(connection):
                     print("Invalid year. Please enter a valid year between 1950 and 2023.")
                     continue
                 break
+
             engine_type = car_enginetype()
             gearbox = car_gearboxtype()
+
             while True:
                 fuel_battery_level = int(input("Enter fuel/battery level [0-100]: "))
                 try:
@@ -153,6 +157,7 @@ def add_cars(connection):
                     print("Invalid fuel/battery level. Please enter a valid fuel/battery level between 0 and 100.")
                     continue
                 break
+
             car_mileage = int(input("Enter car mileage: "))
             status = car_status(fuel_battery_level)
             localization_x = float(input("Enter X coordinate of location: "))
@@ -308,4 +313,38 @@ def update_car_info(connection, ID):
         query5 = "UPDATE cars SET car_mileage = %s, fuel_battery_level = %s, status = %s, localization_x = %s, localization_y = %s WHERE id = %s"
         data = (new_car_mileage, new_fuel_battery_level, status, new_localization_x, new_localization_y, id_car)
         cursor.execute(query5, data)
+        connection.commit()
+
+def refueling(connection):
+    with connection.cursor() as cursor:
+        ID = int(input("Enter a car id: "))
+        query = "SELECT %s FROM %s WHERE %s = %s;"
+        tup = ('status', 'cars', 'id', ID)
+        cursor.execute(query % tup)
+        results = cursor.fetchall()
+        status = results[0][0]
+
+        fuel_battery_level = 100
+        query2 = "UPDATE cars SET fuel_battery_level = %s WHERE id = %s"
+        tup2 = (fuel_battery_level, ID)
+        cursor.execute(query2, tup2)
+
+        if status == "Need_fuel":
+            new_status = "Ready_to_rent"
+            query3 = "UPDATE cars SET status = %s WHERE id = %s"
+            tup3 = (new_status, ID)
+            cursor.execute(query3, tup3)
+            print("The car has been refueled and is ready to rent")
+        else:
+            print("The car has been refueled")
+        connection.commit()
+
+def report_damage(connection):
+    with connection.cursor() as cursor:
+        ID = int(input("Enter a car id: "))
+        status = "Broken"
+        query = "UPDATE cars SET status = %s WHERE id = %s"
+        tup = (status, ID)
+        cursor.execute(query, tup)
+        print("Thank you for the report")
         connection.commit()
