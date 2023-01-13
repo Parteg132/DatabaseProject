@@ -38,13 +38,13 @@ def main():
         elif choice == "3":
           userModule.email_verification(connection)
         elif choice == "4":
-          userModule.log_in(connection)
+          x = userModule.log_in(connection)
         elif choice == "5":
           userModule.refresh_users(connection)
         elif choice == "6":
-          docPay.addLic(connection)
+          docPay.addLic(connection, x)
         elif choice == "7":
-          docPay.addCred(connection)
+          docPay.addCred(connection, x)
         elif choice == "0":
           break
         else:

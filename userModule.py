@@ -215,7 +215,7 @@ def log_in(connection):
         if check == True:
           print('Udane logowanie! ')
           check_null_user(connection, myresult1[0])
-          break
+          return True
 
 
         elif check == False:
@@ -229,6 +229,7 @@ def log_in(connection):
     elif choice == '2':
       break
   mycursor.close()
+  
 
 def check_pswd(password, Hpass):
   userBytes = password.encode('utf-8')
