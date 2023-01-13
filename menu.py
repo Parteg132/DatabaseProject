@@ -3,6 +3,8 @@ from mysql.connector import connect, Error
 
 import userModule
 import docPay
+import renting_leasing_company
+import cars_brands_classes
 
 def print_menu():
   print("-----------------------------------------------")
@@ -13,6 +15,17 @@ def print_menu():
   print("5. Refresh user database")
   print("6. Add your drivers licence")
   print("7. Add your credit card")
+  print("8. Start renting")
+  print("9. Update renting info")
+  print("10. End renting")
+  print("11. Add leasing info")
+  print("12. Add leasing company")
+  print("13. Add a new car")
+  print("14. Add a new brand")
+  print("15. Add a new class")
+  print("16. Edit class")
+  print("17. Refueling")
+  print("18. Report the damage")
   print("0. Quit")
   print("-----------------------------------------------")
 
@@ -28,7 +41,7 @@ def main():
     ) as connection:
       print(connection)
 
-      while True:    
+      while True:
         print_menu()
         choice = input("Enter your choice: ")
         if choice == "1":
@@ -44,7 +57,29 @@ def main():
         elif choice == "6":
           docPay.addLic(connection, x)
         elif choice == "7":
-          docPay.addCred(connection, x)
+          docPay.addCred(connection)
+        elif choice == "8":
+          renting_leasing_company.start_renting(connection)
+        elif choice == "9":
+          renting_leasing_company.update_route_info(connection)
+        elif choice == "10":
+          renting_leasing_company.end_renting(connection)
+        elif choice == "11":
+          renting_leasing_company.add_leasing_deal(connection)
+        elif choice == "12":
+          renting_leasing_company.add_leasing_company(connection)
+        elif choice == "13":
+          cars_brands_classes.add_cars(connection)
+        elif choice == "14":
+          cars_brands_classes.add_brand(connection)
+        elif choice == "15":
+          cars_brands_classes.add_class(connection)
+        elif choice == "16":
+          cars_brands_classes.edit_class(connection)
+        elif choice == "17":
+          cars_brands_classes.refueling(connection)
+        elif choice == "18":
+          cars_brands_classes.report_damage(connection)
         elif choice == "0":
           break
         else:
