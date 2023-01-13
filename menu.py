@@ -32,6 +32,8 @@ def print_menu():
  #'''SPRAWDZIC refresh_users w userModule ! KOMENTARZ'''
 
 def main():
+  id = None
+
   try:
     with connect(
         host="localhost",
@@ -51,13 +53,13 @@ def main():
         elif choice == "3":
           userModule.email_verification(connection)
         elif choice == "4":
-          x = userModule.log_in(connection)
+          id = userModule.log_in(connection)
         elif choice == "5":
           userModule.refresh_users(connection)
         elif choice == "6":
-          docPay.addLic(connection, x)
+          docPay.addLic(connection, id)
         elif choice == "7":
-          docPay.addCred(connection)
+          docPay.addCred(connection, id)
         elif choice == "8":
           renting_leasing_company.start_renting(connection)
         elif choice == "9":

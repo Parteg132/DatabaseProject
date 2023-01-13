@@ -1,42 +1,52 @@
 import datetime
 
 def printData(connection):
-    with connection.cursor() as cursor:
-            cursor.execute("SHOW TABLES")
-            for i in cursor:
-              print(i)
-            table = input("What table would you like to see?: ")
-            query = "SELECT * FROM {};".format(table)
-            cursor.execute(query)
-            print("-----------------------------------------------")
-            print(cursor.column_names)
-            for i in cursor:
-              print(i)
-            print("-----------------------------------------------")
+  with connection.cursor() as cursor:
+          cursor.execute("SHOW TABLES")
+          for i in cursor:
+            print(i)
+          table = input("What table would you like to see?: ")
+          query = "SELECT * FROM {};".format(table)
+          cursor.execute(query)
+          print("-----------------------------------------------")
+          print(cursor.column_names)
+          for i in cursor:
+            print(i)
+          print("-----------------------------------------------")
 
-def addLic(connection, a):
-    x = True
-    formNum = input("Please provide your drivers license's form number: ").upper()
-    print(formNum)
-    while x == True:
-      if len(formNum) != 8:
-        formNum = input("Incorrect number, try again: ").upper()
-      else:
-        x = False
-    
-    x = True
-    expDate = input("and expiry date (YYYY-MM-DD): ")
-    print(datetime.datetime.strptime(expDate, '%Y-%m-%d'))
-    while x == True:
-      if datetime.datetime.strptime(expDate, '%Y-%m-%d') == False or datetime.datetime.strptime(expDate, '%Y-%m-%d') <= datetime.datetime.now():
-        expDate = input("Incorrect date, try again (YYYY-MM-DD): ")
-      else:
-        x = False
-    
-    query = "INSERT INTO document (exp_date, document_number, img_obverse, img_reverse, img_selfie) VALUES ({},{},LOAD_FILE('awers.jpg'),LOAD_FILE('Prawo_jazdy_rewers.png'),LOAD_FILE('selfie.jpeg'))".format(expDate, formNum)
-    with connection.cursor() as cursor:
-      cursor.execute(query)
+def addLic(connection, id):
+  if id == None:
+    print("You need to be logged in in order to add your driver's licence.")
+    return 0
 
-def addCred(connection, a):
-    print("User is transfered to a 3rd party card storage")
-    print("a:", a)
+  formNum = input("Please provide your drivers license's 8 digit form number: ").upper()
+  print(formNum)
+  while True:
+    if len(formNum) != 8:
+      formNum = input("Incorrect number, try again: ").upper()
+    else:
+      break
+
+  while True:
+    try:
+      year = int(input('Enter a year: '))
+      month = int(input('Enter a month: '))
+      day = int(input('Enter a day: '))
+
+      expDate = datetime.date(year, month, day)
+      print("date:", expDate)
+      print("date now:", datetime.date.today())
+      if expDate <= datetime.date.today():
+        raise Exception
+      break
+    except:
+      print("Wrong date format, try again.")
+  
+  query = "INSERT INTO document (id_user, api_url, exp_date, document_number, img_obverse, img_reverse, img_selfie) VALUES ('{}', 'example.com','{}','{}',LOAD_FILE('awers.jpg'),LOAD_FILE('Prawo_jazdy_rewers.png'),LOAD_FILE('selfie.jpeg'))".format(id, expDate, formNum)
+  # DON'T KNOW WHY THIS QUERY ISN'T WORKING
+  with connection.cursor() as cursor:
+    cursor.execute(query)
+
+def addCred(connection, id):
+  print("User is transfered to a 3rd party card storage")
+  print("id:", id)
