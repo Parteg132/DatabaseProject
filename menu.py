@@ -26,6 +26,7 @@ def print_menu():
   print("16. Edit class")
   print("17. Refueling")
   print("18. Report the damage")
+  print("19. Grant discount to user")
   print("0. Quit")
   print("-----------------------------------------------")
 
@@ -82,6 +83,8 @@ def main():
           cars_brands_classes.refueling(connection)
         elif choice == "18":
           cars_brands_classes.report_damage(connection)
+        elif choice == "19":
+          userModule.grant_discount(connection)
         elif choice == "0":
           break
         else:
