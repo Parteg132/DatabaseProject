@@ -42,10 +42,11 @@ def addLic(connection, id):
     except:
       print("Wrong date format, try again.")
   
-  query = "INSERT INTO document (id_user, api_url, exp_date, document_number, img_obverse, img_reverse, img_selfie) VALUES ('{}', 'example.com','{}','{}',LOAD_FILE('awers.jpg'),LOAD_FILE('Prawo_jazdy_rewers.png'),LOAD_FILE('selfie.jpeg'))".format(id, expDate, formNum)
-  # DON'T KNOW WHY THIS QUERY ISN'T WORKING
+  query = "INSERT INTO document (id_user, api_url, exp_date, document_number, img_obverse, img_reverse, img_selfie) VALUES ('{}', 'example.com','{}','{}',LOAD_FILE('C:/Users/Marek/Desktop/Nauka/sem5/Bazy Danych/DatabaseProject/awers.jpg'),LOAD_FILE('C:/Users/Marek/Desktop/Nauka/sem5/Bazy Danych/DatabaseProject/Prawo_jazdy_rewers.png'),LOAD_FILE('C:/Users/Marek/Desktop/Nauka/sem5/Bazy Danych/DatabaseProject/selfie.jpeg'))".format(id, expDate, formNum)
+  # DON'T KNOW WHY THIS QUERY ISN'T WORKING 
   with connection.cursor() as cursor:
     cursor.execute(query)
+    connection.commit()
 
 def addCred(connection, id):
   print("User is transfered to a 3rd party card storage")

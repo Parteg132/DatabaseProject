@@ -51,9 +51,9 @@ CREATE TABLE `document` (
   `exp_date` date,
   `document_number` varchar(255),
   `ext_checker_info` varchar(255),
-  `img_obverse` blob,
-  `img_reverse` blob,
-  `img_selfie` blob
+  `img_obverse` mediumblob,
+  `img_reverse` mediumblob,
+  `img_selfie` mediumblob
 );
 
 CREATE TABLE `renting` (
