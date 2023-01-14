@@ -261,6 +261,32 @@ def check_null_user(connection, id):
   
   
   mycursor.close()
+  
+def grant_discount(connection, id=None, dsc = None):
+  mycursor = connection.cursor()
+
+  if id is None:
+    id = input('ID:')
+    if dsc is None:
+      dsc = input('Discount:') 
+  
+
+  query = 'SELECT discount FROM users WHERE id = %s'
+  mycursor.execute(query,(id,))
+  result = mycursor.fetchone()
+
+  if result[0] is not None:
+    query2 = 'UPDATE users SET discount = discount + %s WHERE id = %s'
+    data = (dsc,id)
+    mycursor.execute(query2, data)
+    connection.commit()
+  else:
+    query2 = 'UPDATE users SET discount = %s WHERE id = %s'
+    data = (dsc,id)
+    mycursor.execute(query2, data)
+    connection.commit()
+
+  mycursor.close()
 
 
   
