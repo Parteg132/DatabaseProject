@@ -1,5 +1,6 @@
 import re
 import random
+import userModule
 
 def print_final_menu():
     print("-----------------------------------------------")
@@ -26,6 +27,25 @@ def print_gearbox_menu():
     print("1. automatyczna")
     print("2. manualna")
     print("-----------------------------------------------")
+
+def car_leasing(connection):
+    with connection.cursor() as cursor:
+        query = "SELECT * FROM leasing;"
+        cursor.execute(query)
+        # print("-----------------------------------------------")
+        # print(cursor.column_names)
+        # for i in cursor:
+        #     print(i)
+        # print("-----------------------------------------------")
+        # cursor.execute(query)
+        results = cursor.fetchall()
+        id_list = [id[0] for id in results]
+        while True:
+            leasing_id = int(input("Select leasing: "))
+            if leasing_id in id_list:
+                return leasing_id
+            else:
+                print("Invalid value. Please try again")
 
 def car_brand(connection):
     with connection.cursor() as cursor:
@@ -116,6 +136,7 @@ def add_cars(connection):
     with connection.cursor() as cursor:
         add_new_car = True
         while add_new_car:
+            leasing_id = car_leasing(connection)
             brand_id = car_brand(connection)
             class_id = car_class(connection)
             while True:
@@ -163,8 +184,8 @@ def add_cars(connection):
             localization_x = float(input("Enter X coordinate of location: "))
             localization_y = float(input("Enter Y coordinate of location: "))
 
-            query = "INSERT INTO cars (brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            data = (brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y)
+            query = "INSERT INTO cars (leasing_id, brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            data = (leasing_id, brand_id, class_id, fuel_card, VIN_number, model, generation, car_year, engine_type, gearbox, fuel_battery_level, car_mileage, status, localization_x, localization_y)
             cursor.execute(query, data)
             print("The car has been added")
             connection.commit()
@@ -324,20 +345,35 @@ def refueling(connection):
         results = cursor.fetchall()
         status = results[0][0]
 
-        fuel_battery_level = 100
-        query2 = "UPDATE cars SET fuel_battery_level = %s WHERE id = %s"
-        tup2 = (fuel_battery_level, ID)
-        cursor.execute(query2, tup2)
+        query2 = "SELECT %s FROM %s WHERE %s = %s;"
+        tup2 = ('fuel_battery_level', 'cars', 'id', ID)
+        cursor.execute(query2 % tup2)
+        results2 = cursor.fetchall()
+        fuel_battery_level = results2[0][0]
+
+        fuel = int(input("Specify how much fuel you want to fill up: "))
+        new_fuel_battery_level = fuel_battery_level + fuel
+        if new_fuel_battery_level >= 100:
+            print("The tank is full")
+            new_fuel_battery_level = 100
+        if new_fuel_battery_level >= fuel_battery_level + 30:
+            print("You deserve a discount!")
+            userModule.grant_discount(connection, id=None, dsc=None)
+
+        query3 = "UPDATE cars SET fuel_battery_level = %s WHERE id = %s"
+        tup3 = (new_fuel_battery_level, ID)
+        cursor.execute(query3, tup3)
 
         if status == "Need_fuel":
             new_status = "Ready_to_rent"
-            query3 = "UPDATE cars SET status = %s WHERE id = %s"
-            tup3 = (new_status, ID)
-            cursor.execute(query3, tup3)
+            query4 = "UPDATE cars SET status = %s WHERE id = %s"
+            tup4 = (new_status, ID)
+            cursor.execute(query4, tup4)
             print("The car has been refueled and is ready to rent")
         else:
             print("The car has been refueled")
         connection.commit()
+
 
 def report_damage(connection):
     with connection.cursor() as cursor:
