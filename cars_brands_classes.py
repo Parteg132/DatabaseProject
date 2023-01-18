@@ -323,8 +323,14 @@ def update_car_info(connection, ID):
 
         new_car_mileage = int(car_mileage) + int(car_route)
         new_fuel_battery_level = int(fuel_battery_level) - ((random.uniform(8, 13)/100)*int(car_route))
-        new_localization_x = random.uniform(-180, 180)
-        new_localization_y = random.uniform(-180, 180)
+
+        query5 = "SELECT %s FROM %s WHERE %s = %s;"
+        tup5 = ('route', 'renting', 'id', ID)
+        cursor.execute(query5 % tup5)
+        results5 = cursor.fetchall()
+        new_localization = results5[0][0]
+        matches = re.findall(r'\((.*?), (.*?)\)', new_localization)
+        new_localization_x, new_localization_y = matches[-1]
 
         if new_fuel_battery_level >= 15:
             status = "Ready_to_rent"
