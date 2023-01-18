@@ -168,22 +168,23 @@ def end_renting(connection):
             cost = kmdriven * kilometer_fee + timedriven * minute_fee + (
                         time_stop + time_reservation) * stopCost + start_fee
 
-            print(cost)
-            if cost>discount:
-                cost = cost - discount
-                #discount zmienic na 0
-                addTechniqueStatement = "update users set discount = %s WHERE id=%s;"
-                val = (0,id_user)
-                cursor.execute(addTechniqueStatement, val)
-                connection.commit()
-            else:
-                
-                discount = discount-cost
-                addTechniqueStatement = "update users set discount = %s WHERE id=%s;"
-                val = (discount,id_user)
-                cursor.execute(addTechniqueStatement, val)
-                connection.commit()
-            print(discount, cost)
+            #print(cost)
+            if discount:
+                if cost>discount:
+                    cost = cost - discount
+                    #discount zmienic na 0
+                    addTechniqueStatement = "update users set discount = %s WHERE id=%s;"
+                    val = (0,id_user)
+                    cursor.execute(addTechniqueStatement, val)
+                    connection.commit()
+                else:
+                    
+                    discount = discount-cost
+                    addTechniqueStatement = "update users set discount = %s WHERE id=%s;"
+                    val = (discount,id_user)
+                    cursor.execute(addTechniqueStatement, val)
+                    connection.commit()
+            #print(discount, cost)
             addTechniqueStatement = "update renting set car_route = %s,time_finished=%s,time_stop=%s,time_reservation=%s,status=%s,cost=%s WHERE id=%s;"
             val = (kmdriven, time_finished, time_stop, time_reservation, status, cost, ID)
             cursor.execute(addTechniqueStatement, val)
