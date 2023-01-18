@@ -174,15 +174,15 @@ def refresh_users(connection):
     connection.commit()
    
 
-  '''!!!!!!!!!!!!!!!!'''
+  #'''!!!!!!!!!!!!!!!!'''
    #UWAGA CZYŚCI TABELE UNVERIFIED_USER GDY TTL = 24H [CZYLI CALA TABELA, BO WIEKSZOSC JEST TTL>24H]
-  '''!!!!!!!!!!!!!!!!'''
+  #'''!!!!!!!!!!!!!!!!'''
 
-  # else:
-  #   query = "DELETE FROM unverified_users WHERE ttl < (NOW() - interval 1 day)"
-  #   mycursor.execute(query)
-  #   print("Affected rows = {}".format(mycursor.rowcount))
-  #   connection.commit()
+  else:
+     query = "DELETE FROM unverified_users WHERE ttl < (NOW() - interval 1 day)"
+     mycursor.execute(query)
+     print("Affected rows = {}".format(mycursor.rowcount))
+     connection.commit()
   
   print('Done processing')
   mycursor.close()
